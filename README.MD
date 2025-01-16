@@ -1,15 +1,15 @@
-# PX4, AirSim, and Unreal Engine 4.27.2 Setup Tutorial
+# 🚀 PX4, AirSim, and Unreal Engine 4.27.2 Setup Tutorial
 
 This guide provides step-by-step instructions to set up PX4, AirSim, and Unreal Engine 4.27.2 on Windows.
 
 ---
 
-## Prerequisites
+## 🎯 Prerequisites
 
-### 1. Install Git
+### 1️⃣ Install Git
 - Download and install Git from [git-scm.com](https://git-scm.com/downloads/win).
 
-### 2. Clone AirSim Repository
+### 2️⃣ Clone AirSim Repository
 ```bash
 cd Documents
 git clone https://github.com/microsoft/AirSim.git
@@ -17,30 +17,30 @@ cd AirSim
 build.cmd
 ```
 
-### 3. Install Visual Studio 2022
+### 3️⃣ Install Visual Studio 2022
 - Download and install [Visual Studio 2022](https://visualstudio.microsoft.com/).
 - Open **Tools** → **Command Line** → **Developer PowerShell**.
 
   ![Developer PowerShell](./img/devpowershell.png)
 
 - In the Visual Studio Installer, check the following workloads:
-  - `.NET desktop development`
-  - `Desktop development with C++`
-  - `Unreal Engine Projects`
+  - `.NET desktop development` ✔️
+  - `Desktop development with C++` ✔️
+  - `Unreal Engine Projects` ✔️
 
   ![Visual Studio Installer](./img/visualstudio.png)
 
 - Install the required SDKs:
-  - Windows 11 SDK (for Windows 11)
-  - Windows 10 SDK (for Windows 10)
-  - .NET Framework 4.8.1 SDK
+  - ✅ Windows 11 SDK (for Windows 11)
+  - ✅ Windows 10 SDK (for Windows 10)
+  - ✅ .NET Framework 4.8.1 SDK
 
 ---
 
-## Unreal Engine Installation
+## 🛠️ Unreal Engine Installation
 
 1. Install the [Epic Games Launcher](https://www.epicgames.com/store/en-US/).
-2. In the launcher, go to **Unreal Engine** → **Library** and install **Unreal Engine 4.27.2**.
+2. Go to **Unreal Engine** → **Library** and install **Unreal Engine 4.27.2**.
 3. Launch Unreal Engine 4.27.2.
 4. On the **Select or Create New Project** screen:
    - Choose **Games** → **Next**.
@@ -52,7 +52,7 @@ build.cmd
 
 ---
 
-## Project Configuration
+## 🔧 Project Configuration
 
 1. Go to **File** → **New C++ Class**.
    - Select **None** → **Next** → **Create Class**.
@@ -66,13 +66,12 @@ build.cmd
 
 3. Right-click the `.uproject` file and open it in Visual Studio.
 
-4. Modify the `.uproject` file:
+4. Modify the `.uproject` file to include AirSim as a dependency:
    ```json
    "Type": "Runtime",
    "LoadingPhase": "Default",
    "AdditionalDependencies": [
        "AirSim"
-   ]
    ],
    "TargetPlatforms": [
        "MacNoEditor",
@@ -94,14 +93,14 @@ build.cmd
      ```
 
 6. Generate Visual Studio project files:
-   - Navigate to your project folder, right-click, and select **Show More Options** → **Generate Visual Studio project files**.
+   - Right-click your project folder and select **Show More Options** → **Generate Visual Studio project files**.
      ![Generate Project Files](./img/9.png)
 
 7. Open the `.sln` file in Visual Studio and click **Local Windows Debugger** to run.
 
 ---
 
-## AirSim Settings
+## 🌐 AirSim Settings
 
 1. Navigate to:
    ```bash
@@ -150,10 +149,59 @@ build.cmd
    }
    ```
 
+Here’s the updated tutorial with a section for finding your **Control Host IP** and **Local Host IP**:
+
 ---
 
-## PX4 Setup with WSL2
+## 🌍 Finding Your Control Host IP and Local Host IP
 
+Before configuring your simulation, you need to find the following:
+
+1. **Control Host IP**: The IP address of the host running the simulation.
+2. **Local Host IP**: The IP address of your Windows machine for local communication.
+
+---
+
+### 🔍 Steps to Find the Local Host IP
+
+1. Open **Windows PowerShell** or **Command Prompt**.
+2. Run the following command:
+   ```bash
+   ipconfig
+   ```
+3. Look under the **Ethernet adapter** or **Wi-Fi** section for the line labeled **IPv4 Address**. This is your **Local Host IP**.
+
+   Example:
+   
+   ![Find Local Host IP](./img/12.png)
+
+---
+
+### 🔍 Steps to Find the Control Host IP (WSL IP)
+
+1. Open your WSL2 terminal (e.g., Ubuntu).
+2. Run the following command to find the IP address for WSL:
+   ```bash
+   ifconfig
+   ```
+3. Look for the `eth0` section and find the **inet** address. This is your **Control Host IP**.
+
+   Example:
+  ![Find Local Host IP](./img/13.png)
+
+---
+
+### 📌 Why These IPs Are Important
+
+- **Local Host IP**: Used to configure PX4 to communicate with your Unreal Engine project running on the Windows host.
+- **Control Host IP**: Used to set up communication between PX4 in WSL and external tools like QGroundControl.
+
+## 🐧 PX4 Setup with WSL2
+
+**What is WSL2 and Why Do We Need It?**
+- **WSL2 (Windows Subsystem for Linux 2)** allows running a Linux environment on Windows. PX4 relies on Linux tools for simulation and WSL2 provides an efficient way to integrate these with Windows-based tools like Unreal Engine and QGroundControl.
+
+### Steps:
 1. Install WSL:
    ```bash
    wsl --install
@@ -166,7 +214,7 @@ build.cmd
    ```bash
    cd /mnt/c/Users/<YourUsername>/Desktop
    ```
-4. Clone the PX4 source code:
+4. Clone the PX4 repository:
    ```bash
    git clone https://github.com/PX4/PX4-Autopilot.git --recursive
    cd PX4-Autopilot
@@ -186,112 +234,45 @@ build.cmd
 
 ---
 
-## Running the Simulation
+## 🎮 Running the Simulation
 
-1. Launch your Unreal Engine project and click **Play**.
-2. Open WSL and run:
+1. Launch your Unreal Engine project and click **Play**. 🎮
+2. Open WSL and run PX4:
    ```bash
    make px4_sitl none_iris
    ```
-3. Install [QGroundControl](https://qgroundcontrol.com).
-   - Configure **Comm Links**:
-     ```text
-     Name: WSL2
-     Type: UDP
-     Port: 14580
-     Server Addresses (optional): {YOUR_CONTROL_HOST_IP}:14580
-     ```
-
+3. Install and configure [QGroundControl](https://qgroundcontrol.com). 🚁
 4. Start the stack in this order:
-   1. Play your Unreal Engine project.
-   2. Run PX4:
-      ```bash
-      make px4_sitl none_iris
-      ```
+   1. Play Unreal Engine project.
+   2. Run PX4 in WSL.
    3. Launch QGroundControl.
 
 ---
 
-## Running the Full Stack
+## 🚀 Placeholder: MissionControl Setup (Coming Soon)
 
-Start the components in the following order:
-
-1. **Play Your Unreal Engine Project**
-   - Open your Unreal Engine project and press **Play**.
-
-2. **Start PX4**
-   - Open WSL and run:
-     ```bash
-     make px4_sitl none_iris
-     ```
-
-3. **Launch QGroundControl**
-   - Open QGroundControl to manage the drone.
+This section will guide you through the integration and setup of **MissionControl** for managing and monitoring drone missions.
 
 ---
 
-## Using QGroundControl
-
-1. **Clear Existing Flight Paths**
-   - Go to **File** → **Clear**.
-     
-     ![Clear Flight Paths](./img/16.png)
-
-2. **Takeoff and Waypoints**
-   - Click **Takeoff**.
-   - Use the interface to set at least two waypoints on the map.
-   - Click **Upload Required** to confirm the waypoints.
-
-     ![Set Waypoints](./img/18.png)
-
-3. **Start the Flight**
-   - Slide the **Takeoff** slider to the right to begin the flight.
-
-     ![Takeoff](./img/19.png)
-
-4. **Observe the Flight**
-   - The drone will follow the flight path set in QGroundControl and display its movement in Unreal Engine.
-
---- 
-
-This setup ensures seamless integration of PX4, AirSim, and Unreal Engine with QGroundControl for managing and simulating drone flights.
-
----
-
-## Additional Commands
-
-### For PX4
-- **Takeoff**:
-  ```bash
-  commander takeoff
-  ```
-- **Land**:
-  ```bash
-  commander land
-  ```
-
----
-
-Enjoy flying your simulated drone with PX4, AirSim, and Unreal Engine!
-
-Here’s a Mermaid chart to visualize how the stack works:
+## 📊 Visualizing the Stack
 
 ```mermaid
 graph TD
     subgraph User Interaction
-        A[Play Unreal Engine Project]
-        B[Set Waypoints in QGroundControl]
+        A[Play Unreal Engine Project 🎮]
+        B[Set Waypoints in QGroundControl 🚁]
     end
     
     subgraph Simulation Stack
         C[Unreal Engine 4.27.2]
         D[AirSim Plugin]
-        E[PX4 SITL in WSL]
-        F[QGroundControl]
+        E[PX4 SITL in WSL 🐧]
+        F[QGroundControl 🚁]
     end
     
     subgraph Communication
-        G[UDP Communication]
+        G[UDP Communication 📡]
     end
 
     A --> C
@@ -302,16 +283,4 @@ graph TD
     B --> F
 ```
 
-### Explanation of the Chart:
-1. **User Interaction**:
-   - The user initiates the Unreal Engine project and sets waypoints in QGroundControl.
-   
-2. **Simulation Stack**:
-   - Unreal Engine uses the AirSim plugin to simulate a drone environment.
-   - AirSim communicates with PX4 SITL running in WSL to emulate flight control and sensors.
-   - QGroundControl acts as the user interface for mission planning and telemetry.
-
-3. **Communication**:
-   - Communication between PX4 SITL and QGroundControl happens via **UDP** protocol, enabling real-time updates and control.
-
-Let me know if you need further refinements!
+Let me know if there are more refinements you'd like! 😊
