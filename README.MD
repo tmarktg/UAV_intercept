@@ -249,9 +249,79 @@ Before configuring your simulation, you need to find the following:
 
 ---
 
-## 🚀 Placeholder: MissionControl Setup (Coming Soon)
+Here's the explanation added to the documentation:
 
-This section will guide you through the integration and setup of **MissionControl** for managing and monitoring drone missions.
+---
+
+## ❓ What If I Use Custom Software Instead of QGroundControl?
+
+If you decide to replace **QGroundControl (QGC)** with custom software designed to only interface with the PX4 SITL port, the communication principles remain the same. Here's how it works:
+
+---
+
+### 📡 What Communication Protocol Is Needed?
+
+- **Protocol**: The PX4 SITL communicates using the **MAVLink protocol**.
+  - MAVLink is a lightweight messaging protocol for communication between drones and ground control systems.
+  - By default, PX4 SITL sends MAVLink messages over **UDP port 14580**.
+  - If you replace QGC, your custom software will also need to use the **UDP protocol** to listen to and send MAVLink messages on this port.
+
+- **Reference Port**: UDP **14580** is the default port configured in PX4 for MAVLink communication. If you do not override this in PX4’s `settings.json`, your custom software must use this port.
+
+---
+
+### 🔑 Key Steps for Custom Software Integration
+
+1. **Communicate via MAVLink Protocol**:
+   - Use the **MAVLink protocol** to interface with PX4 SITL.
+   - MAVLink handles various commands like arming the drone, initiating takeoff, setting waypoints, and landing.
+
+2. **Use UDP Port 14580**:
+   - Your software must bind to **UDP port 14580** to receive MAVLink messages from PX4.
+   - Example in Python:
+     ```python
+     from pymavlink import mavutil
+
+     # Connect to PX4 SITL via UDP port 14580
+     connection = mavutil.mavlink_connection('udp:localhost:14580')
+     print("Connected to MAVLink...")
+     ```
+
+3. **Configure PX4 (if needed)**:
+   - Confirm that the `settings.json` file in PX4 is set to use the default port:
+     ```json
+     "UdpPort": 14580
+     ```
+
+4. **Send and Receive MAVLink Messages**:
+   - Your software can send MAVLink commands (e.g., arm, takeoff, land) and receive telemetry or status updates from PX4.
+
+---
+
+### 📚 Reference Documents
+
+1. **MAVLink Protocol Documentation**:
+   - Learn more about MAVLink messages and their structure:
+     - [MAVLink 2 Protocol](https://mavlink.io/en/)
+     - [PX4 MAVLink Commands](https://docs.px4.io/main/en/middleware/mavlink.html)
+
+2. **pymavlink Library Documentation**:
+   - For integrating MAVLink in Python:
+     - [pymavlink Documentation](https://github.com/ArduPilot/pymavlink)
+
+3. **PX4 Documentation**:
+   - Official PX4 SITL and MAVLink configuration:
+     - [PX4 SITL Documentation](https://docs.px4.io/main/en/simulation/)
+
+---
+
+### 🧩 Why It Still Uses UDP on Port 14580
+
+- PX4 SITL uses MAVLink as its default protocol and UDP as its communication method.
+- Replacing QGC with a custom software solution doesn't change the protocol (MAVLink) or the communication method (UDP). The custom software needs to adhere to these standards to interface correctly with PX4.
+- **Advantages of Using UDP**:
+  - Lightweight and fast for real-time drone communication.
+  - Easy to configure and widely supported in development environments.
 
 ---
 
