@@ -273,3 +273,45 @@ This setup ensures seamless integration of PX4, AirSim, and Unreal Engine with Q
 ---
 
 Enjoy flying your simulated drone with PX4, AirSim, and Unreal Engine!
+
+Here’s a Mermaid chart to visualize how the stack works:
+
+```mermaid
+graph TD
+    subgraph User Interaction
+        A[Play Unreal Engine Project]
+        B[Set Waypoints in QGroundControl]
+    end
+    
+    subgraph Simulation Stack
+        C[Unreal Engine 4.27.2]
+        D[AirSim Plugin]
+        E[PX4 SITL in WSL]
+        F[QGroundControl]
+    end
+    
+    subgraph Communication
+        G[UDP Communication]
+    end
+
+    A --> C
+    C --> D
+    D --> E
+    E --> G
+    G --> F
+    B --> F
+```
+
+### Explanation of the Chart:
+1. **User Interaction**:
+   - The user initiates the Unreal Engine project and sets waypoints in QGroundControl.
+   
+2. **Simulation Stack**:
+   - Unreal Engine uses the AirSim plugin to simulate a drone environment.
+   - AirSim communicates with PX4 SITL running in WSL to emulate flight control and sensors.
+   - QGroundControl acts as the user interface for mission planning and telemetry.
+
+3. **Communication**:
+   - Communication between PX4 SITL and QGroundControl happens via **UDP** protocol, enabling real-time updates and control.
+
+Let me know if you need further refinements!
