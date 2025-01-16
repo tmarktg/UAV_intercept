@@ -237,7 +237,7 @@ Before configuring your simulation, you need to find the following:
 ## 🎮 Running the Simulation
 
 1. Launch your Unreal Engine project and click **Play**. 🎮
-2. Open WSL and run PX4:
+2. Open WSL to run and build:
    ```bash
    make px4_sitl none_iris
    ```
@@ -282,5 +282,3 @@ graph TD
     G --> F
     B --> F
 ```
-
-Let me know if there are more refinements you'd like! 😊
