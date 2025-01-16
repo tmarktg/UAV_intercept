@@ -9,19 +9,8 @@ This guide provides step-by-step instructions to set up PX4, AirSim, and Unreal 
 ### 1️⃣ Install Git
 - Download and install Git from [git-scm.com](https://git-scm.com/downloads/win).
 
-### 2️⃣ Clone AirSim Repository
-```bash
-cd Documents
-git clone https://github.com/microsoft/AirSim.git
-cd AirSim
-build.cmd
-```
-
-### 3️⃣ Install Visual Studio 2022
+### 2️⃣Install Visual Studio 2022
 - Download and install [Visual Studio 2022](https://visualstudio.microsoft.com/).
-- Open **Tools** → **Command Line** → **Developer PowerShell**.
-
-  ![Developer PowerShell](./img/devpowershell.png)
 
 - In the Visual Studio Installer, check the following workloads:
   - `.NET desktop development` ✔️
@@ -35,7 +24,21 @@ build.cmd
   - ✅ Windows 10 SDK (for Windows 10)
   - ✅ .NET Framework 4.8.1 SDK
 
----
+- Open **Tools** → **Command Line** → **Developer PowerShell**.
+
+  ![Developer PowerShell](./img/devpowershell.png)
+
+- When cloning the AirSim Repository, run it inside the Developer PowerShell. The Visual Studio tools are needed to run the build.cmd
+
+### 3️⃣ Clone AirSim Repository
+
+
+```bash
+cd Documents
+git clone https://github.com/microsoft/AirSim.git
+cd AirSim
+build.cmd
+```
 
 ## 🛠️ Unreal Engine Installation
 
@@ -149,8 +152,6 @@ build.cmd
    }
    ```
 
-Here’s the updated tutorial with a section for finding your **Control Host IP** and **Local Host IP**:
-
 ---
 
 ## 🌍 Finding Your Control Host IP and Local Host IP
@@ -246,10 +247,6 @@ Before configuring your simulation, you need to find the following:
    1. Play Unreal Engine project.
    2. Run PX4 in WSL.
    3. Launch QGroundControl.
-
----
-
-Here's the explanation added to the documentation:
 
 ---
 
